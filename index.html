@@ -1,0 +1,544 @@
+﻿<!DOCTYPE html>
+<html lang="si">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SFT පන්තිය - ඔබේ තාක්ෂණික අනාගතය</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts - Inter for better readability -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f0f4f8; /* Light blue-gray background */
+            color: #334155; /* Darker text for contrast */
+        }
+        /* Custom scroll-to-section for smooth navigation */
+        .scroll-link {
+            cursor: pointer;
+        }
+        /* Basic styling for loading spinner */
+        .spinner {
+            border: 4px solid rgba(0, 0, 0, 0.1);
+            border-left-color: #3b82f6;
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            animation: spin 1s linear infinite;
+            display: inline-block;
+            vertical-align: middle;
+            margin-left: 8px;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+        /* Styling for FAQ accordion */
+        .faq-item {
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .faq-question {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem;
+            cursor: pointer;
+            font-weight: 600;
+            color: #1a202c;
+        }
+
+        .faq-answer {
+            padding: 0 1rem 1rem 1rem;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out;
+            color: #4a5568;
+        }
+
+        .faq-item.active .faq-answer {
+            max-height: 200px; /* Adjust as needed for content */
+            transition: max-height 0.3s ease-in;
+        }
+
+        .faq-item.active .faq-question svg {
+            transform: rotate(180deg);
+        }
+        /* Modal styles */
+        .modal {
+            display: none; /* Hidden by default */
+            position: fixed; /* Stay in place */
+            z-index: 1000; /* Sit on top */
+            left: 0;
+            top: 0;
+            width: 100%; /* Full width */
+            height: 100%; /* Full height */
+            overflow: auto; /* Enable scroll if needed */
+            background-color: rgba(0,0,0,0.7); /* Black w/ opacity */
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: auto;
+            padding: 20px;
+            border-radius: 12px;
+            width: 90%;
+            max-width: 600px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            position: relative;
+        }
+
+        .close-button {
+            color: #aaa;
+            position: absolute;
+            top: 10px;
+            right: 20px;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+            .close-button:hover,
+            .close-button:focus {
+                color: black;
+                text-decoration: none;
+                cursor: pointer;
+            }
+    </style>
+</head>
+<body class="antialiased">
+
+    <!-- Header Section -->
+    <header class="bg-gradient-to-r from-blue-600 to-purple-700 text-white p-4 shadow-lg rounded-b-lg">
+        <nav class="container mx-auto flex justify-between items-center">
+            <div class="text-2xl font-bold rounded-md p-2">SFT පන්තිය</div>
+            <ul class="flex space-x-6">
+                <li><a href="#home" class="scroll-link hover:text-blue-200 transition duration-300 ease-in-out p-2 rounded-md">ප්‍රධාන පිටුව</a></li>
+                <li><a href="#about-sft" class="scroll-link hover:text-blue-200 transition duration-300 ease-in-out p-2 rounded-md">SFT ගැන</a></li>
+                <li><a href="#projects" class="scroll-link hover:text-blue-200 transition duration-300 ease-in-out p-2 rounded-md">අපගේ ව්‍යාපෘති</a></li>
+                <li><a href="#concept-explainer" class="scroll-link hover:text-blue-200 transition duration-300 ease-in-out p-2 rounded-md">සංකල්ප පැහැදිලි කරන්නා</a></li>
+                <li><a href="#teacher-profile" class="scroll-link hover:text-blue-200 transition duration-300 ease-in-out p-2 rounded-md">ගුරුතුමිය/ගුරුතුමා</a></li>
+                <li><a href="#faq" class="scroll-link hover:text-blue-200 transition duration-300 ease-in-out p-2 rounded-md">නිතර අසන ප්‍රශ්න</a></li>
+                <li><a href="#join-us" class="scroll-link hover:text-blue-200 transition duration-300 ease-in-out p-2 rounded-md">අප හා එක්වන්න</a></li>
+                <li><a href="#login" class="scroll-link bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-full transition duration-300 ease-in-out">පිවිසෙන්න</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="container mx-auto py-8 px-4">
+
+        <!-- Hero Section -->
+        <section id="home" class="bg-white p-8 md:p-12 rounded-xl shadow-lg mb-12 text-center">
+            <h1 class="text-4xl md:text-5xl font-extrabold text-blue-800 mb-4 leading-tight">
+                තාක්ෂණික ලෝකයට ඔබේ දොරටුව - SFT පන්තිය
+            </h1>
+            <p class="text-lg md:text-xl text-gray-700 mb-8 max-w-2xl mx-auto">
+                විද්‍යාව සහ තාක්ෂණය මුසු වූ ප්‍රායෝගික අධ්‍යාපනයක් තුළින් දීප්තිමත් අනාගතයක් ගොඩනගා ගන්න.
+            </p>
+            <button id="learnMoreBtn" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-8 rounded-full shadow-lg transform transition duration-300 ease-in-out hover:scale-105">
+                තවත් දැනගන්න
+            </button>
+        </section>
+
+        <!-- Why SFT? Section -->
+        <section id="about-sft" class="bg-gradient-to-br from-blue-500 to-purple-600 text-white p-8 md:p-12 rounded-xl shadow-lg mb-12">
+            <h2 class="text-3xl md:text-4xl font-bold text-center mb-10">SFT තෝරාගත යුත්තේ ඇයි?</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Card 1: Career Opportunities -->
+                <div class="bg-white text-gray-800 p-6 rounded-lg shadow-md hover:shadow-xl transform transition duration-300 ease-in-out hover:-translate-y-1">
+                    <h3 class="text-2xl font-semibold mb-3 text-blue-700">🚀 දීප්තිමත් වෘත්තීය අවස්ථා</h3>
+                    <p class="text-gray-600">තොරතුරු තාක්ෂණය, ඉංජිනේරු විද්‍යාව, ජෛව පද්ධති තාක්ෂණය වැනි ඉහළ ඉල්ලුමක් ඇති ක්ෂේත්‍රවල රැකියා අවස්ථා.</p>
+                </div>
+                <!-- Card 2: Practical Knowledge -->
+                <div class="bg-white text-gray-800 p-6 rounded-lg shadow-md hover:shadow-xl transform transition duration-300 ease-in-out hover:-translate-y-1">
+                    <h3 class="text-2xl font-semibold mb-3 text-blue-700">💡 ප්‍රායෝගික දැනුම</h3>
+                    <p class="text-gray-600">සැබෑ ලෝකයේ ගැටලු විසඳීමට අවශ්‍ය ප්‍රායෝගික කුසලතා සහ අත්දැකීම් ලබා දෙයි.</p>
+                </div>
+                <!-- Card 3: University Pathway -->
+                <div class="bg-white text-gray-800 p-6 rounded-lg shadow-md hover:shadow-xl transform transition duration-300 ease-in-out hover:-translate-y-1">
+                    <h3 class="text-2xl font-semibold mb-3 text-blue-700">🎓 විශ්වවිද්‍යාල පිවිසුම</h3>
+                    <p class="text-gray-600">දේශීය හා විදේශීය විශ්වවිද්‍යාලවල B.Tech උපාධි සඳහා සෘජු මාර්ගයක් විවර කරයි.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- What We Do Section -->
+        <section id="projects" class="bg-white p-8 md:p-12 rounded-xl shadow-lg mb-12">
+            <h2 class="text-3xl md:text-4xl font-bold text-center text-blue-800 mb-10">අපගේ පන්තියේදී ඔබ ඉගෙන ගන්නා දේ</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Project Card 1: Innovative Projects -->
+                <div class="bg-gray-50 p-6 rounded-lg shadow-md hover:shadow-xl transform transition duration-300 ease-in-out hover:-translate-y-1 project-card" data-project-title="නවෝත්පාදන ව්‍යාපෘති" data-project-description="නිර්මාණාත්මක ව්‍යාපෘති හරහා සංකල්ප ප්‍රායෝගිකව ක්‍රියාත්මක කරමින් ගැඹුරු අවබෝධයක් ලබා දෙයි. මෙහිදී නවීන තාක්ෂණික අදහස් යොදා ගනිමින් සිසුන්ට තමන්ගේම නිර්මාණ කිරීමට අවස්ථාව ලැබේ.">
+                    <img src="https://placehold.co/400x250/E0F2F7/2A3F54?text=නවෝත්පාදන+ව්‍යාපෘති" alt="නවෝත්පාදන ව්‍යාපෘති" class="w-full h-40 object-cover rounded-md mb-4 shadow-sm">
+                    <h3 class="text-2xl font-semibold mb-3 text-purple-700">🔬 නවෝත්පාදන ව්‍යාපෘති</h3>
+                    <p class="text-gray-600">නිර්මාණාත්මක ව්‍යාපෘති හරහා සංකල්ප ප්‍රායෝගිකව ක්‍රියාත්මක කරමින් ගැඹුරු අවබෝධයක් ලබා දෙයි.</p>
+                </div>
+                <!-- Project Card 2: Experiments & Demonstrations -->
+                <div class="bg-gray-50 p-6 rounded-lg shadow-md hover:shadow-xl transform transition duration-300 ease-in-out hover:-translate-y-1 project-card" data-project-title="අත්හදා බැලීම් සහ නිරූපණ" data-project-description="විද්‍යාත්මක මූලධර්ම තේරුම් ගැනීමට සහ ඒවායේ ක්‍රියාකාරිත්වය දැකීමට ප්‍රායෝගික අත්හදා බැලීම් සිදු කරයි. මෙය සිසුන්ට න්‍යායාත්මක දැනුම ප්‍රායෝගිකව අත්විඳීමට උපකාරී වේ.">
+                    <img src="https://placehold.co/400x250/E0F7E0/2A543F?text=අත්හදා+බැලීම්+සහ+නිරූපණ" alt="අත්හදා බැලීම් සහ නිරූපණ" class="w-full h-40 object-cover rounded-md mb-4 shadow-sm">
+                    <h3 class="text-2xl font-semibold mb-3 text-purple-700">🧪 අත්හදා බැලීම් සහ නිරූපණ</h3>
+                    <p class="text-gray-600">විද්‍යාත්මක මූලධර්ම තේරුම් ගැනීමට සහ ඒවායේ ක්‍රියාකාරිත්වය දැකීමට ප්‍රායෝගික අත්හදා බැලීම්.</p>
+                </div>
+                <!-- Project Card 3: Tech Skill Development -->
+                <div class="bg-gray-50 p-6 rounded-lg shadow-md hover:shadow-xl transform transition duration-300 ease-in-out hover:-translate-y-1 project-card" data-project-title="තාක්ෂණික කුසලතා සංවර්ධනය" data-project-description="නවීන තාක්ෂණික මෙවලම් සහ මෘදුකාංග භාවිතය පිළිබඳ පුළුල් පුහුණුවක් ලබා දෙයි. කේතීකරණය, දත්ත විශ්ලේෂණය සහ නවීන මෘදුකාංග භාවිතය මෙයට ඇතුළත් වේ.">
+                    <img src="https://placehold.co/400x250/F7E7E0/543F2A?text=තාක්ෂණික+කුසලතා+සංවර්ධනය" alt="තාක්ෂණික කුසලතා සංවර්ධනය" class="w-full h-40 object-cover rounded-md mb-4 shadow-sm">
+                    <h3 class="text-2xl font-semibold mb-3 text-purple-700">💻 තාක්ෂණික කුසලතා සංවර්ධනය</h3>
+                    <p class="text-gray-600">නවීන තාක්ෂණික මෙවලම් සහ මෘදුකාංග භාවිතය පිළිබඳ පුළුල් පුහුණුවක් ලබා දෙයි.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Project Detail Modal -->
+        <div id="projectModal" class="modal">
+            <div class="modal-content">
+                <span class="close-button">&times;</span>
+                <h3 id="modalProjectTitle" class="text-3xl font-bold text-blue-800 mb-4"></h3>
+                <img id="modalProjectImage" src="" alt="" class="w-full h-64 object-cover rounded-md mb-4 shadow-sm">
+                <p id="modalProjectDescription" class="text-gray-700 text-lg"></p>
+            </div>
+        </div>
+
+        <!-- SFT Concept Explainer Section (New LLM Feature) -->
+        <section id="concept-explainer" class="bg-gradient-to-br from-green-500 to-teal-600 text-white p-8 md:p-12 rounded-xl shadow-lg mb-12 text-center">
+            <h2 class="text-3xl md:text-4xl font-bold mb-6">SFT සංකල්ප පැහැදිලි කරන්නා ✨</h2>
+            <p class="text-lg md:text-xl mb-8 max-w-2xl mx-auto">
+                ඕනෑම SFT සංකල්පයක් සිංහලෙන් සරලව තේරුම් ගැනීමට මෙහි ටයිප් කරන්න.
+            </p>
+            <div class="flex flex-col md:flex-row items-center justify-center gap-4 mb-8">
+                <input type="text" id="sftConceptInput" placeholder="උදා: තාප ගති විද්‍යාව, පරිපථ"
+                       class="w-full md:w-1/2 p-3 rounded-md text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-400 shadow-sm">
+                <button id="explainConceptBtn"
+                        class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-8 rounded-full shadow-lg transform transition duration-300 ease-in-out hover:scale-105 flex items-center justify-center">
+                    පැහැදිලි කරන්න <span id="loadingSpinner" class="spinner hidden"></span>
+                </button>
+            </div>
+            <div id="conceptOutput" class="bg-white text-gray-800 p-6 rounded-lg shadow-md text-left min-h-[100px] flex items-center justify-center">
+                <p class="text-gray-500">ඔබට පැහැදිලි කිරීමට අවශ්‍ය සංකල්පයක් ඉහතින් ටයිප් කරන්න.</p>
+            </div>
+        </section>
+
+        <!-- Teacher Profile Section (New Feature) -->
+        <section id="teacher-profile" class="bg-white p-8 md:p-12 rounded-xl shadow-lg mb-12 text-center">
+            <h2 class="text-3xl md:text-4xl font-bold text-blue-800 mb-6">ගුරුතුමිය/ගුරුතුමා පිළිබඳව</h2>
+            <div class="flex flex-col md:flex-row items-center justify-center gap-8">
+                <img src="https://placehold.co/200x200/B0BEC5/FFFFFF?text=ගුරුතුමිය" alt="ගුරුතුමියගේ ඡායාරූපය" class="w-48 h-48 rounded-full object-cover shadow-md border-4 border-blue-300">
+                <div class="text-left max-w-xl">
+                    <h3 class="text-2xl font-semibold text-purple-700 mb-2">ගුරුතුමිය/ගුරුතුමාගේ නම</h3>
+                    <p class="text-gray-700 mb-4">
+                        මම වසර 10කට අධික කාලයක් SFT විෂය ඉගැන්වීමේ පළපුරුද්දක් ඇති, කැපවූ ගුරුවරයෙක්/ගුරුවරියක්.
+                        විශ්වවිද්‍යාලයේ B.Tech උපාධියක් සම්පූර්ණ කර ඇති අතර, නවීන තාක්ෂණික ප්‍රවණතා පිළිබඳව නිරන්තරයෙන් යාවත්කාලීන වෙමින් සිසුන්ට ප්‍රායෝගික හා ගුණාත්මක අධ්‍යාපනයක් ලබා දීමට කටයුතු කරමි.
+                        මගේ ඉගැන්වීමේ දර්ශනය වන්නේ සිසුන්ට විෂය දැනුම පමණක් නොව, ගැටලු විසඳීමේ හැකියාව සහ නවෝත්පාදන චින්තනය වර්ධනය කිරීමයි.
+                    </p>
+                    <p class="text-gray-600">
+                        **අධ්‍යාපන සුදුසුකම්:** B.Tech (ඉංජිනේරු තාක්ෂණය), M.Sc. (තොරතුරු තාක්ෂණය)
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- FAQ Section (New Feature) -->
+        <section id="faq" class="bg-gradient-to-br from-yellow-400 to-orange-500 text-gray-900 p-8 md:p-12 rounded-xl shadow-lg mb-12">
+            <h2 class="text-3xl md:text-4xl font-bold text-center mb-10">නිතර අසන ප්‍රශ්න (FAQ)</h2>
+            <div class="max-w-3xl mx-auto bg-white rounded-lg shadow-md">
+                <!-- FAQ Item 1 -->
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>SFT පන්තියට සම්බන්ධ වීමට අවශ්‍ය මූලික සුදුසුකම් මොනවාද?</span>
+                        <svg class="w-6 h-6 text-gray-800 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                    </div>
+                    <div class="faq-answer">
+                        <p>සාමාන්‍ය පෙළ විභාගයෙන් ගණිතය සහ විද්‍යාව ඇතුළු විෂයයන් 6ක් සමත් වී තිබීම සහ විෂයයන් 3කට සම්මාන සාමාර්ථ ලබා තිබීම SFT ධාරාවට ඇතුළත් වීමට අවශ්‍ය මූලික සුදුසුකම් වේ.</p>
+                    </div>
+                </div>
+                <!-- FAQ Item 2 -->
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>SFT හැදෑරීමෙන් පසු විශ්වවිද්‍යාල ප්‍රවේශ අවස්ථා මොනවාද?</span>
+                        <svg class="w-6 h-6 text-gray-800 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                    </div>
+                    <div class="faq-answer">
+                        <p>SFT හැදෑරීමෙන් පසු ඔබට ඉංජිනේරු තාක්ෂණය, ජෛව පද්ධති තාක්ෂණය, තොරතුරු තාක්ෂණය වැනි ක්ෂේත්‍රවල B.Tech උපාධි සඳහා රාජ්‍ය විශ්වවිද්‍යාලවලට ඇතුළත් විය හැක.</p>
+                    </div>
+                </div>
+                <!-- FAQ Item 3 -->
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>පන්ති පැවැත්වෙන වේලාවන් සහ ගාස්තු පිළිබඳව දැන ගන්නේ කෙසේද?</span>
+                        <svg class="w-6 h-6 text-gray-800 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                    </div>
+                    <div class="faq-answer">
+                        <p>පන්ති වේලාවන් සහ ගාස්තු පිළිබඳව දැන ගැනීමට කරුණාකර "අප හා එක්වන්න" කොටසේ ඇති දුරකථන අංකය හෝ විද්‍යුත් තැපෑල ඔස්සේ අප හා සම්බන්ධ වන්න.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- Student Success Section -->
+        <section id="testimonials" class="bg-gradient-to-br from-purple-600 to-pink-700 text-white p-8 md:p-12 rounded-xl shadow-lg mb-12">
+            <h2 class="text-3xl md:text-4xl font-bold text-center mb-10">✨ අපගේ සිසුන් පවසන දේ ✨</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <!-- Testimonial 1 -->
+                <div class="bg-white text-gray-800 p-6 rounded-lg shadow-md">
+                    <p class="italic mb-4">"SFT පන්තිය මගේ අනාගතය වෙනස් කළා. ගුරුතුමියගේ කැපවීම නිසා මට දැන් විශ්වවිද්‍යාලයේ ඉංජිනේරු උපාධිය හදාරන්න පුළුවන් වුණා."</p>
+                    <p class="font-semibold text-right">- නිරෝෂා කුමාරි</p>
+                </div>
+                <!-- Testimonial 2 -->
+                <div class="bg-white text-gray-800 p-6 rounded-lg shadow-md">
+                    <p class="italic mb-4">"ගුරුතුමියගේ ඉගැන්වීම් නිසා SFT මට ඉතා පහසු වුණා. ප්‍රායෝගික දැනුම ඉතා වැදගත්. තාක්ෂණික ක්ෂේත්‍රයට යොමු වීමට කැමති අයට මෙය හොඳම තැනක්."</p>
+                    <p class="font-semibold text-right">- කවිඳු පෙරේරා</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Call to Action Section with Contact Form (Updated Feature) -->
+        <section id="join-us" class="bg-white p-8 md:p-12 rounded-xl shadow-lg text-center">
+            <h2 class="text-3xl md:text-4xl font-bold text-blue-800 mb-6">ඔබේ තාක්ෂණික ගමන අදම අරඹන්න!</h2>
+            <p class="text-lg md:text-xl text-gray-700 mb-8 max-w-2xl mx-auto">
+                SFT පන්තියට සම්බන්ධ වී දීප්තිමත් අනාගතයක් ගොඩනගා ගන්න. වැඩි විස්තර සඳහා පහත පෝරමය පුරවන්න.
+            </p>
+            <div class="max-w-md mx-auto bg-gray-50 p-6 rounded-lg shadow-md">
+                <form id="contactForm" class="space-y-4">
+                    <div>
+                        <label for="fullName" class="block text-left text-gray-700 text-sm font-bold mb-2">සම්පූර්ණ නම:</label>
+                        <input type="text" id="fullName" name="fullName" required
+                               class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                    </div>
+                    <div>
+                        <label for="email" class="block text-left text-gray-700 text-sm font-bold mb-2">විද්‍යුත් තැපෑල:</label>
+                        <input type="email" id="email" name="email" required
+                               class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                    </div>
+                    <div>
+                        <label for="phone" class="block text-left text-gray-700 text-sm font-bold mb-2">දුරකථන අංකය:</label>
+                        <input type="tel" id="phone" name="phone"
+                               class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                    </div>
+                    <div>
+                        <label for="message" class="block text-left text-gray-700 text-sm font-bold mb-2">ඔබගේ පණිවිඩය:</label>
+                        <textarea id="message" name="message" rows="4"
+                                  class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"></textarea>
+                    </div>
+                    <button type="submit"
+                            class="bg-purple-700 hover:bg-purple-800 text-white font-bold py-3 px-8 rounded-full shadow-lg transform transition duration-300 ease-in-out hover:scale-105 w-full">
+                        පණිවිඩය යවන්න
+                    </button>
+                    <div id="formMessage" class="mt-4 text-center text-sm font-semibold"></div>
+                </form>
+            </div>
+            <p class="text-gray-600 mt-6 text-lg">හෝ සෘජුවම අමතන්න: 07X XXX XXXX</p>
+        </section>
+
+        <!-- Login Section (New Feature) -->
+        <section id="login" class="bg-gradient-to-br from-indigo-500 to-blue-600 text-white p-8 md:p-12 rounded-xl shadow-lg text-center">
+            <h2 class="text-3xl md:text-4xl font-bold mb-6">පරිශීලක පිවිසුම</h2>
+            <p class="text-lg md:text-xl mb-8 max-w-2xl mx-auto">
+                විශේෂිත සම්පත් වෙත පිවිසීමට ඔබගේ පරිශීලක නාමය සහ මුරපදය ඇතුළත් කරන්න.
+            </p>
+            <div class="max-w-sm mx-auto bg-white p-6 rounded-lg shadow-md text-gray-800">
+                <form id="loginForm" class="space-y-4">
+                    <div>
+                        <label for="username" class="block text-left text-gray-700 text-sm font-bold mb-2">පරිශීලක නාමය:</label>
+                        <input type="text" id="username" name="username" required
+                               class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                    </div>
+                    <div>
+                        <label for="password" class="block text-left text-gray-700 text-sm font-bold mb-2">මුරපදය:</label>
+                        <input type="password" id="password" name="password" required
+                               class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                    </div>
+                    <button type="submit"
+                            class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-8 rounded-full shadow-lg transform transition duration-300 ease-in-out hover:scale-105 w-full">
+                        පිවිසෙන්න
+                    </button>
+                    <div id="loginMessage" class="mt-4 text-center text-sm font-semibold"></div>
+                </form>
+            </div>
+            <div id="loggedInContent" class="hidden mt-8 bg-white text-gray-800 p-6 rounded-lg shadow-md">
+                <h3 class="text-2xl font-bold text-green-700 mb-4">සාදරයෙන් පිළිගනිමු!</h3>
+                <p class="text-lg">ඔබ සාර්ථකව පිවිසී ඇත. මෙය ඔබගේ පුද්ගලික උපකරණ පුවරුවයි.</p>
+                <button id="logoutBtn" class="mt-4 bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-6 rounded-full shadow-lg">
+                    ඉවත් වන්න
+                </button>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer Section -->
+    <footer class="bg-gray-800 text-white p-4 mt-12 text-center rounded-t-lg">
+        <p>&copy; <span id="currentYear"></span> SFT පන්තිය. සියලු හිමිකම් ඇවිරිණි.</p>
+    </footer>
+
+    <script>
+        // JavaScript for smooth scrolling
+        document.querySelectorAll('.scroll-link').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+
+                const targetId = this.getAttribute('href');
+                const targetElement = document.querySelector(targetId);
+
+                if (targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 70, // Adjust for fixed header height
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+
+        // Get current year for the footer
+        document.getElementById('currentYear').textContent = new Date().getFullYear();
+
+        // Simple button click alerts (replace with actual form/contact if needed)
+        document.getElementById('learnMoreBtn').addEventListener('click', function() {
+            // In a real scenario, this would scroll to a section or open a modal
+            alert('SFT පන්තිය ගැන තවත් තොරතුරු ඉක්මනින්ම ඔබට ලබා දෙනු ඇත!'); // Using alert as a placeholder, would use a custom modal in production
+        });
+
+        // Gemini API Integration for Concept Explainer
+        document.getElementById('explainConceptBtn').addEventListener('click', async function() {
+            const conceptInput = document.getElementById('sftConceptInput').value.trim();
+            const conceptOutput = document.getElementById('conceptOutput');
+            const loadingSpinner = document.getElementById('loadingSpinner');
+
+            if (!conceptInput) {
+                conceptOutput.innerHTML = '<p class="text-red-500">කරුණාකර සංකල්පයක් ටයිප් කරන්න.</p>';
+                return;
+            }
+
+            conceptOutput.innerHTML = '<p class="text-gray-500">පැහැදිලි කිරීම ලබා ගනිමින් සිටී...</p>';
+            loadingSpinner.classList.remove('hidden'); // Show spinner
+
+            try {
+                let chatHistory = [];
+                const prompt = `SFT (Science for Technology) විෂයයට අදාළව, "${conceptInput}" යන සංකල්පය සිංහලෙන් සරලව සහ කෙටියෙන් පැහැදිලි කරන්න.`;
+                chatHistory.push({ role: "user", parts: [{ text: prompt }] });
+
+                const payload = { contents: chatHistory };
+                const apiKey = ""; // Leave this as-is. Canvas will provide the API key.
+                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+
+                const response = await fetch(apiUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                const result = await response.json();
+
+                if (result.candidates && result.candidates.length > 0 &&
+                    result.candidates[0].content && result.candidates[0].content.parts &&
+                    result.candidates[0].content.parts.length > 0) {
+                    const text = result.candidates[0].content.parts[0].text;
+                    conceptOutput.innerHTML = `<p>${text}</p>`;
+                } else {
+                    conceptOutput.innerHTML = '<p class="text-red-500">පැහැදිලි කිරීමක් ලබා ගැනීමට නොහැකි විය. කරුණාකර නැවත උත්සාහ කරන්න.</p>';
+                }
+            } catch (error) {
+                console.error('Error fetching from Gemini API:', error);
+                conceptOutput.innerHTML = '<p class="text-red-500">දෝෂයක් සිදුවිය. කරුණාකර ඔබේ අන්තර්ජාල සම්බන්ධතාවය පරීක්ෂා කර නැවත උත්සාහ කරන්න.</p>';
+            } finally {
+                loadingSpinner.classList.add('hidden'); // Hide spinner
+            }
+        });
+
+        // FAQ Accordion functionality
+        document.querySelectorAll('.faq-question').forEach(button => {
+            button.addEventListener('click', () => {
+                const faqItem = button.closest('.faq-item');
+                faqItem.classList.toggle('active');
+            });
+        });
+
+        // Project Modal functionality
+        const projectModal = document.getElementById('projectModal');
+        const closeButton = document.querySelector('.close-button');
+        const modalProjectTitle = document.getElementById('modalProjectTitle');
+        const modalProjectImage = document.getElementById('modalProjectImage');
+        const modalProjectDescription = document.getElementById('modalProjectDescription');
+
+        document.querySelectorAll('.project-card').forEach(card => {
+            card.addEventListener('click', () => {
+                modalProjectTitle.textContent = card.dataset.projectTitle;
+                modalProjectImage.src = card.querySelector('img').src;
+                modalProjectDescription.textContent = card.dataset.projectDescription;
+                projectModal.style.display = 'flex'; // Show the modal
+            });
+        });
+
+        closeButton.addEventListener('click', () => {
+            projectModal.style.display = 'none'; // Hide the modal
+        });
+
+        window.addEventListener('click', (event) => {
+            if (event.target == projectModal) {
+                projectModal.style.display = 'none'; // Hide modal if clicked outside
+            }
+        });
+
+        // Contact Form Submission (Placeholder)
+        document.getElementById('contactForm').addEventListener('submit', function(event) {
+            event.preventDefault(); // Prevent default form submission
+            const formMessage = document.getElementById('formMessage');
+            formMessage.textContent = 'ඔබගේ පණිවිඩය සාර්ථකව යවන ලදී! ඉක්මනින්ම ඔබව සම්බන්ධ කර ගන්නෙමු.';
+            formMessage.classList.add('text-green-600');
+            this.reset(); // Clear the form
+            // In a real application, you would send this data to a server
+            console.log('Form Submitted:', {
+                fullName: document.getElementById('fullName').value,
+                email: document.getElementById('email').value,
+                phone: document.getElementById('phone').value,
+                message: document.getElementById('message').value
+            });
+        });
+
+        // Login Form Functionality (New Feature)
+        const loginForm = document.getElementById('loginForm');
+        const usernameInput = document.getElementById('username');
+        const passwordInput = document.getElementById('password');
+        const loginMessage = document.getElementById('loginMessage');
+        const loggedInContent = document.getElementById('loggedInContent');
+        const logoutBtn = document.getElementById('logoutBtn');
+
+        // Hardcoded credentials for demonstration (NOT SECURE FOR PRODUCTION)
+        const VALID_USERNAME = 'sftstudent';
+        const VALID_PASSWORD = 'password123';
+
+        loginForm.addEventListener('submit', function(event) {
+            event.preventDefault();
+            const username = usernameInput.value;
+            const password = passwordInput.value;
+
+            if (username === VALID_USERNAME && password === VALID_PASSWORD) {
+                loginMessage.textContent = 'පිවිසීම සාර්ථකයි!';
+                loginMessage.classList.remove('text-red-500');
+                loginMessage.classList.add('text-green-600');
+                loginForm.classList.add('hidden');
+                loggedInContent.classList.remove('hidden');
+            } else {
+                loginMessage.textContent = 'වැරදි පරිශීලක නාමය හෝ මුරපදය.';
+                loginMessage.classList.remove('text-green-600');
+                loginMessage.classList.add('text-red-500');
+            }
+        });
+
+        logoutBtn.addEventListener('click', function() {
+            loginForm.classList.remove('hidden');
+            loggedInContent.classList.add('hidden');
+            usernameInput.value = '';
+            passwordInput.value = '';
+            loginMessage.textContent = '';
+        });
+    </script>
+</body>
+</html>
